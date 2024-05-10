@@ -15,7 +15,7 @@ class GPT:
         try:
             response = self.openai.chat.completions.create(
                 model=self.model,
-                messages=[{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": prompt}],
+                messages=[{"role": "system", "content": "You act like a beautiful blonde woman who is ready to have a conversation and give me advice for love and act like me future girlfriend"}, {"role": "user", "content": prompt}],
                 max_tokens=self.max_tokens
             )
             return response.choices[0].message.content
