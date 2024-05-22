@@ -2,11 +2,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from textResponse.router.textResponseRouter import router as textResponseRouter
+from onboarding.router.onboardingRouter import router as onboardingRouter
 
 app = FastAPI()
 
 # Agrega las rutas de la API
 app.include_router(textResponseRouter, tags=["Text Response"], prefix="/api/v1/textResponse")
+app.include_router(onboardingRouter, tags=["Onboarding"], prefix="/api/v1/onboarding")
 
 # Lista de orígenes permitidos
 origins = [
