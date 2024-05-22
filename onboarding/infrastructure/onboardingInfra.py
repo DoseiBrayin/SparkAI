@@ -2,8 +2,9 @@ from db.conection import Session
 from models.responseModel import APIResponse
 from onboarding.models.loginModel import LoginModel
 from onboarding.models.signUpModel import SignUpModel
-from db.models.sparkDbModel import User
+from db.models.sparkDbModel import User,Gender,Payment,Personality
 from fastapi import HTTPException
+import uuid
 
 
 def login(login: LoginModel):
@@ -26,21 +27,25 @@ def signUp(signUp: SignUpModel):
         if user:
             raise HTTPException(status_code=401, detail=APIResponse(status="Failed", message="User Exists", data=None,status_code=401).__dict__)
         else:
+            gender = session.query(Gender).get(signUp.fk_gender)
+            payment = session.query(Payment).get(signUp.fk_payment)
+            personality = session.query(Personality).get(signUp.fk_personality)
+
             newUser = User(
-                id=signUp.id,
+                id=str(uuid.uuid4()),
                 name=signUp.name,
                 email=signUp.email,
                 password=signUp.password,
                 age_range=signUp.age_range,
-                gender=signUp.gender,
-                payment=signUp.payment,
-                personality=signUp.personality
+                gender=gender,
+                payment=payment,
+                personality=personality
             )
             session.add(newUser)
             session.commit()
-            user_dict = {key: value for key, value in newUser.__dict__.items() if key != '_sa_instance_state'}
-            return APIResponse(status="Success", message="User Created", data=user_dict,status_code=200)
+            return APIResponse(status="Success", message="User Created", data=newUser.to_dict(),status_code=200)
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=APIResponse(status="Failed", message="Internal Server Error", data=str(e),status_code=500).__dict__)
     finally:
         session.close()

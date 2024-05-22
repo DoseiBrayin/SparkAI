@@ -1,11 +1,10 @@
 from pydantic import BaseModel
 
 class SignUpModel(BaseModel):
-    id: str
-    name: str
-    email: str
-    password: str
-    age_range: str
-    personality: str
-    gender: str
-    payment: str = None
+    name : str
+    email : str
+    password : str
+    age_range : str
+    fk_gender : str
+    fk_payment : str = None
+    fk_personality : str
