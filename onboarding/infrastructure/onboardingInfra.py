@@ -2,6 +2,7 @@ from db.conection import Session
 from models.responseModel import APIResponse
 from onboarding.models.loginModel import LoginModel
 from onboarding.models.signUpModel import SignUpModel
+from onboarding.models.paymentModel import PaymentModel
 from db.models.sparkDbModel import User,Gender,Payment,Personality
 from fastapi import HTTPException
 import uuid
@@ -46,4 +47,20 @@ def signUp(signUp: SignUpModel):
         raise HTTPException(status_code=500, detail=APIResponse(status="Failed", message="Internal Server Error", data=str(e),status_code=500).__dict__)
     finally:
         session.close()
+
+def setPayment(pay:PaymentModel):
+    try:
+        session = Session()
+        newPayment = Payment(
+            id=str(uuid.uuid4()),
+            token=pay.token,
+            state=pay.state,
+            date=pay.date
+        )
+        session.add(newPayment)
+        session.commit()
+        return APIResponse(status="Success", message="Payment Created", data=newPayment.to_dict()["id"],status_code=200)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=APIResponse(status="Failed", message="Internal Server Error", data=str(e),status_code=500).__dict__)
+        
 

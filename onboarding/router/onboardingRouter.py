@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 from models.responseModel import APIResponse
-from onboarding.infrastructure.onboardingInfra import login, signUp
+from onboarding.infrastructure.onboardingInfra import login, signUp, setPayment
 from onboarding.models.loginModel import LoginModel
 from onboarding.models.signUpModel import SignUpModel
+from onboarding.models.paymentModel import PaymentModel
 
 router = APIRouter()
 
@@ -13,3 +14,7 @@ def login_user(login_user: LoginModel):
 @router.post("/signUp", response_model=APIResponse)
 def signUp_user(signUp_user: SignUpModel):
     return signUp(signUp_user)
+
+@router.post("/payment", response_model=APIResponse)
+def set_payment(payment: PaymentModel):
+    return setPayment(payment)
