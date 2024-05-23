@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey, Boolean, Date
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -23,20 +23,18 @@ class Payment(Base):
     __tablename__ = 'payment'
 
     id = Column(String(36), primary_key=True)
-    name = Column(String(100), nullable=False)
-    card_number = Column(String, nullable=False, unique=True)
-    cvv = Column(String(3), nullable=False)
-    expiration_date = Column(String(6), nullable=False)
+    token = Column(String(100), nullable=False)
+    state = Column(Boolean, nullable=False)
+    date = Column(Date, nullable=False)
     
     users = relationship('User', back_populates='payment')
 
     def to_dict(self):
         return {
             "id": self.id,
-            "name": self.name,
-            "card_number": self.card_number,
-            "cvv": self.cvv,
-            "expiration_date": self.expiration_date
+            "token": self.token,
+            "state": self.state,
+            "expiration_date": self.date
         }
     
 class Personality(Base):
