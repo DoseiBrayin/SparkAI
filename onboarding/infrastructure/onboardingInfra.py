@@ -62,5 +62,7 @@ def setPayment(pay:PaymentModel):
         return APIResponse(status="Success", message="Payment Created", data=newPayment.to_dict()["id"],status_code=200)
     except Exception as e:
         raise HTTPException(status_code=500, detail=APIResponse(status="Failed", message="Internal Server Error", data=str(e),status_code=500).__dict__)
+    finally:
+        session.close()
         
 
