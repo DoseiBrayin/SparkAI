@@ -4,6 +4,7 @@ from onboarding.models.loginModel import LoginModel
 from onboarding.models.signUpModel import SignUpModel
 from onboarding.models.paymentModel import PaymentModel
 from db.models.sparkDbModel import User,Gender,Payment,Personality
+from helpers.reDate import is_valid_date
 from fastapi import HTTPException
 import uuid
 
@@ -52,6 +53,8 @@ def signUp(signUp: SignUpModel):
         session.close()
 
 def setPayment(pay:PaymentModel):
+    if not is_valid_date(pay.date):
+        raise HTTPException(status_code=400, detail=APIResponse(status="Failed", message="Invalid Date Format is YYYY-MM-DD", data=None,status_code=400).__dict__)
     try:
         session = Session()
         newPayment = Payment(
