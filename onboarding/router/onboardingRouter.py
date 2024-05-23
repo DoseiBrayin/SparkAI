@@ -6,10 +6,10 @@ from onboarding.models.signUpModel import SignUpModel
 
 router = APIRouter()
 
-@router.post("/login")
-def login_user(login_user: LoginModel, response_model=APIResponse):
+@router.post("/login", response_model=APIResponse)
+def login_user(login_user: LoginModel):
     return login(login_user)
 
-@router.post("/signUp")
-def signUp_user(signUp_user: SignUpModel, response_model=APIResponse):
+@router.post("/signUp", response_model=APIResponse)
+def signUp_user(signUp_user: SignUpModel):
     return signUp(signUp_user)
