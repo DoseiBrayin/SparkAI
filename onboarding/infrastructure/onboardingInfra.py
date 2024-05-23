@@ -11,6 +11,10 @@ def login(login: LoginModel):
     try:
         session = Session()
         user = session.query(User).filter(User.email == login.email, User.password == login.password).first()
+        if user:
+            user_gender = user.gender
+            user_payment = user.payment
+            user_personality = user.personality
     except Exception as e:
         raise HTTPException(status_code=500, detail=APIResponse(status="Failed", message="Internal Server Error", data=str(e),status_code=500).__dict__)
     finally:
@@ -19,7 +23,6 @@ def login(login: LoginModel):
             return APIResponse(status="Success", message="Login Successfull", data=user.to_dict(),status_code=200)
         else:
             raise HTTPException(status_code=401, detail=APIResponse(status="Failed", message="Invalid Credentials", data=None,status_code=401).__dict__)
-
 def signUp(signUp: SignUpModel):
     try:
         session = Session()

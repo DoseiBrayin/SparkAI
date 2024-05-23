@@ -1,9 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from models.responseModel import APIResponse
 from onboarding.infrastructure.onboardingInfra import login, signUp, setPayment
 from onboarding.models.loginModel import LoginModel
 from onboarding.models.signUpModel import SignUpModel
 from onboarding.models.paymentModel import PaymentModel
+from JWT.JWTBearer import JWTBearer
 
 router = APIRouter()
 
