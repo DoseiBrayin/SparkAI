@@ -16,7 +16,7 @@ class GPT:
 
     def chat_message(self, prompt, user_id, gender=1):
         context = getChatContext(user_id)
-        print(context)
+
         try:
             messages = []
 
