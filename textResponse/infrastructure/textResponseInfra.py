@@ -23,7 +23,7 @@ def getGPTResponse(message:TextResponse) -> APIResponse:
             id=ObjectId(),
             sender="bot",
             type='text',
-            messages=GPT().chat_message(message.message_user),
+            messages=GPT().chat_message(message.message_user,user_id=message.user_id),
             timestamp= message.timestamp if message.timestamp != None else datetime.now(),
             metadata= message.metadata if message.metadata != None else {}
         )
