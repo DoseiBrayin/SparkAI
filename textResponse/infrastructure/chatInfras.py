@@ -16,3 +16,7 @@ def create_chat_room(chat: ChatModel):
     chat_dict["_id"] = ObjectId()  # Genera un nuevo ObjectId
     result = chats_collection.insert_one(chat_dict)
     return result.inserted_id
+
+def get_chats_by_user_id(user_id):
+    chats = chats_collection.find({"user_id": user_id})
+    return APIResponse(data=[{**chat, "_id": str(chat["_id"])} for chat in chats], message="Chats retrieved successfully", status="success",status_code=200)
