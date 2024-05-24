@@ -1,12 +1,13 @@
 from fastapi import APIRouter
 from models.responseModel import APIResponse
+from textResponse.models.textModel import TextResponse
 from textResponse.infrastructure.textResponseInfra import *
 
 router = APIRouter()
 
 @router.post("/", response_model=APIResponse)
-def get_text_response(user, prompt,gender):
-    return getGPTResponse(user, prompt,gender)
+def get_text_response(message:TextResponse):
+    return getGPTResponse(message)
 
 @router.post("/voice", response_model=APIResponse)
 def get_voice_response(user, message):

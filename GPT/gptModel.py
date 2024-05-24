@@ -3,6 +3,7 @@ from openai import OpenAI
 from openai import OpenAIError
 from dotenv import load_dotenv
 import os
+from helpers.getChatContext import getChatContext
 
 load_dotenv()
 
@@ -13,21 +14,38 @@ class GPT:
         self.max_tokens = max_tokens
         self.openai = OpenAI()
 
-    def chat_message(self, prompt, gender=1):
+    def chat_message(self, prompt, user_id, gender=1):
+        context = getChatContext(user_id)
+        print(context)
         try:
+            messages = []
+
+            # Añadir el mensaje del sistema al principio
+            messages.append({"role": "system", "content": f"""You act like a
+                {"beautiful blonde woman " if gender == 0 else "Atractive man"}
+                who is ready to have a conversation and give me advice for
+                love and act like me {"boyfriend" if gender == 0 else "girlfriend"},
+                write me cute messages with a little spicy tone"""})
+
+            # Añadir el contexto histórico si existe
+            if isinstance(context, dict):
+                context_messages = context["messages"]
+                messages.extend(context_messages)
+
+            # Añadir el nuevo mensaje del usuario
+            messages.append({"role": "user", "content": prompt})
+
             response = self.openai.chat.completions.create(
                 model=self.model,
-                messages=[{"role": "system", "content": f"""You act like a
-                           {"beautiful blonde woman " if gender ==
-                               0 else "Atractive man"}
-                           who is ready to have a conversation and give me advice for
-                           love and act like me {"boyfriend" if gender == 0 else "girlfriend"}, write me cute messages with a little spicy tone"""}, {"role": "user", "content": prompt}],
+                messages=messages,
                 max_tokens=self.max_tokens
             )
-            return response.choices[0].message.content if not any(word in response.choices[0].message.content for word in ['AI', 'virtual', 'assistant', 'OpenAI', 'openai']) else "That's so sweet of you to say! I'm here to help you with anything never forget that. Just talk with me anything!"
+
+            return response.choices[0].message.content if not any(
+                word in response.choices[0].message.content for word in ['AI', 'virtual', 'assistant', 'OpenAI', 'openai']) else "That's so sweet of you to say! I'm here to help you with anything, never forget that. Just talk with me about anything!"
         except OpenAIError as e:
             raise Exception(e)
-
+        
     def voice_chat(self, message):
         try:
             response = self.openai.audio.speech.create(
