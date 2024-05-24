@@ -21,16 +21,14 @@ class GPT:
             messages = []
 
             # Añadir el mensaje del sistema al principio
-            messages.append({"role": "system", "content": f"""You act like a
+            messages.append({
+                "role": "system", 
+                "content": f"""You act like a
                 {"beautiful blonde woman " if gender == 0 else "Atractive man"}
                 who is ready to have a conversation and give me advice for
                 love and act like me {"boyfriend" if gender == 0 else "girlfriend"},
-                write me cute messages with a little spicy tone"""})
-
-            # Añadir el contexto histórico si existe
-            if isinstance(context, dict):
-                context_messages = context["messages"]
-                messages.extend(context_messages)
+                write me cute messages with a little spicy tone and follow this conversation {', '.join([str(msg['message']) for msg in context]) if context else "is the first conversation"}"""
+            })
 
             # Añadir el nuevo mensaje del usuario
             messages.append({"role": "user", "content": prompt})
