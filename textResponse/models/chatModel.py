@@ -30,16 +30,23 @@ class PyObjectId(ObjectId):
         return str(self.binary)
 
 class MessagesModel(BaseModel):
-    id: str = Field(alias="_id")
+    id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
     sender: str
     type: str
     messages: str
     metadata: Optional[dict] = None  
     timestamp: datetime
+    
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {
+            PyObjectId: str
+        }
 
     def to_dict(self):
         return {
-            "_id": self.id,
+            "_id": str(self.id),
             "sender": self.sender,
             "type": self.type,
             "messages": self.messages,
@@ -54,7 +61,7 @@ class ChatModel(BaseModel):
     messages: List[MessagesModel] = []
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {
             PyObjectId: str
