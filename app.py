@@ -14,11 +14,10 @@ app.include_router(chats_router, tags=["Chat"], prefix="/api/v1")
 
 # Lista de orígenes permitidos
 origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:8080",
-    "http://localhost:5173",
+    "http://10.0.2.2:3000",  # Android emulator
+    "http://localhost:3000",  # iOS emulator
+    "https://sparkai-desarrollo.up.railway.app",  # URL de tu servidor
+    # otras direcciones de origen permitidas
 ]
 
 # Agrega el middleware CORS
