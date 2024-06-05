@@ -12,7 +12,7 @@ app.include_router(textResponseRouter, tags=["Text Response"], prefix="/api/v1/t
 app.include_router(onboardingRouter, tags=["Onboarding"], prefix="/api/v1/onboarding")
 app.include_router(chats_router, tags=["Chat"], prefix="/api/v1")
 
-# Lista de orígenes permitidos
+
 origins = [
     "http://10.0.2.2:3000",  # Android emulator
     "http://localhost:3000",  # iOS emulator
@@ -23,7 +23,7 @@ origins = [
 # Agrega el middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
