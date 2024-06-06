@@ -16,3 +16,7 @@ def get_voice_response(user, message):
 @router.post("/image", response_model=APIResponse)
 def get_image_response(user, image):
     return getGPTImageResponse(user, image)
+
+@router.post("/test", response_model=APIResponse)
+def get_train_response(trainMessage:TrainModel):
+    return getTrainGPTResponse(trainMessage)
